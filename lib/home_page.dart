@@ -37,12 +37,12 @@ class _HomePageState extends State<HomePage> {
                 )
               ],
             ),
-            Expanded(child: TabBarView(children: [
-              GlobalTab(),
-              CountryTab(),
-            ]),)
-
-
+            Expanded(
+              child: TabBarView(children: [
+                GlobalTab(),
+                CountryTab(),
+              ]),
+            )
           ],
         ),
       ),

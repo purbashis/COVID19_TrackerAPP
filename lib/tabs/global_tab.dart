@@ -17,7 +17,7 @@ class _GlobalTabState extends State<GlobalTab> {
     var response = await http.get(Uri.https('disease.sh', 'v3/covid-19/all'));
     var jsonData = jsonDecode(response.body);
 
-    final team = Global(
+    final gc = Global(
       cases: jsonData['cases'].toString(),
       active: jsonData['active'].toString(),
       recovered: jsonData['recovered'].toString(),
@@ -25,7 +25,7 @@ class _GlobalTabState extends State<GlobalTab> {
       critical: jsonData['critical'].toString(),
     );
 
-    global.add(team);
+    global.add(gc);
   }
 
   @override
@@ -51,18 +51,15 @@ class _GlobalTabState extends State<GlobalTab> {
                     const SizedBox(
                       height: 70,
                     ),
-                   
-                         Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Expanded(
-                          child:  buildDataBox(
+                          child: buildDataBox(
                               'Cases', global[0].cases, Colors.blue),
                         ),
-                      
                       ],
                     ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
