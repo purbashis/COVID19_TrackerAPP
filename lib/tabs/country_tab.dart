@@ -67,6 +67,7 @@ class _CountryTabState extends State<CountryTab> {
         ],
       ),
       body: Center(
+        
         child: ElevatedButton(
           onPressed: () async {
             // Example usage of getCountryData
@@ -76,11 +77,12 @@ class _CountryTabState extends State<CountryTab> {
           },
           child: const Text('Load Country Data'),
         ),
+        
       ),
+      
     );
   }
 }
-
 
 class CountrySearch extends SearchDelegate<String> {
   final List<Country> countries;
@@ -165,6 +167,18 @@ class CountrySearch extends SearchDelegate<String> {
   }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 class CountryDetails extends StatelessWidget {
   final Country country;
 
@@ -172,41 +186,85 @@ class CountryDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // return Scaffold(
+    //   appBar: AppBar(
+    //     title: Text(country.countryName),
+    //   ),
+    //   body: Padding(
+
+    //     padding: const EdgeInsets.all(16.0),
+    //     child: Column(
+    //       crossAxisAlignment: CrossAxisAlignment.start,
+    //       children: [
+    //         buildDetailBox('Cases', country.cases),
+    //         buildDetailBox('Total Recovered', country.totalRecovered),
+    //         buildDetailBox('Deaths', country.deaths),
+    //         buildDetailBox('Active Cases', country.activeCases),
+    //         buildDetailBox('Serious Critical', country.seriousCritical),
+    //       ],
+    //     ),
+    //   ),
+    // );
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(country.countryName),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            buildDetailBox('Cases', country.cases),
-            buildDetailBox('Total Recovered', country.totalRecovered),
-            buildDetailBox('Deaths', country.deaths),
-            buildDetailBox('Active Cases', country.activeCases),
-            buildDetailBox('Serious Critical', country.seriousCritical),
-          ],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              country.countryName,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(
+            height: 70,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: buildDetailBox('Cases', country.cases, Colors.blue),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: buildDetailBox(
+                    'Active Cases', country.activeCases, Colors.green),
+              ),
+              Expanded(
+                child: buildDetailBox(
+                    'Total Recovered', country.totalRecovered, Colors.orange),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: buildDetailBox('Deaths', country.deaths, Colors.red),
+              ),
+              Expanded(
+                child: buildDetailBox(
+                    'Serious Critical', country.seriousCritical, Colors.purple),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
 
-  Widget buildDetailBox(String title, String value) {
+  Widget buildDetailBox(String title, String value, Color color) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.15),
-            spreadRadius: 3,
-            blurRadius: 5,
-            offset: const Offset(0, 0),
-          ),
-        ],
+       decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -214,7 +272,7 @@ class CountryDetails extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              color: Colors.black,
+              color: Colors.white,
               fontSize: 18,
               fontWeight: FontWeight.w500,
             ),
@@ -223,7 +281,7 @@ class CountryDetails extends StatelessWidget {
           Text(
             value,
             style: const TextStyle(
-              color: Colors.black,
+              color: Colors.white,
               fontSize: 16,
             ),
           ),
