@@ -84,7 +84,7 @@ API -  var url = Uri.https(
     return Scaffold(
       //app bar search field that will be displayed on the top of the screen.
       appBar: AppBar(
-        title: const Text('Enter a country name'),
+        title: const Text('Type the Country Name'),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
@@ -332,11 +332,14 @@ class _CountryDetailsState extends State<CountryDetails> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
+            
             title,
             style: const TextStyle(
+              
               color: Colors.white,
               fontSize: 18,
               fontWeight: FontWeight.w500,
