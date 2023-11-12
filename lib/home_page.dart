@@ -21,7 +21,9 @@ class _HomePageState extends State<HomePage> {
           title: const Text('Covid19 Tracker'),
         ),
         body: const Column(
+         
           children: [
+            
             TabBar(
               tabs: [
                 Tab(
@@ -39,6 +41,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Expanded(
               child: TabBarView(children: [
+                
                 GlobalTab(),
                 CountryTab(),
               ]),

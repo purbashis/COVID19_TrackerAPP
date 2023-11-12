@@ -3,6 +3,24 @@ import 'package:covid19/model/country.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+/*
+dart:convert: Provides encoding and decoding of JSON.
+covid19/model/country.dart: Assuming this is a custom class for representing country data.
+flutter/material.dart: Flutter's material design widgets.
+http/http.dart as http: For making HTTP requests.
+
+*/
+
+
+
+/*
+CountryTab Class
+
+A StatefulWidget representing the main tab where country data will be displayed.
+*/
+
+
+
 class CountryTab extends StatefulWidget {
   const CountryTab({Key? key}) : super(key: key);
 
@@ -11,6 +29,24 @@ class CountryTab extends StatefulWidget {
 }
 
 class _CountryTabState extends State<CountryTab> {
+
+
+/*
+
+getCountryData Function:
+
+A function that makes an HTTP request to get COVID-19 data for countries.
+
+API -  var url = Uri.https(
+      'corona-virus-world-and-india-data.p.rapidapi.com',
+      '/api',
+    );
+
+*/
+
+
+
+
   Future<List<Country>> getCountryData() async {
     var url = Uri.https(
       'corona-virus-world-and-india-data.p.rapidapi.com',
@@ -27,6 +63,10 @@ class _CountryTabState extends State<CountryTab> {
 
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
+
+      //getting the countries data from the json response as a list of Country objects.
+
+
       List<Country> countries = [];
 
       for (var countryData in jsonData['countries_stat']) {
@@ -47,16 +87,20 @@ class _CountryTabState extends State<CountryTab> {
     }
   }
 
+
+// Here is the scaffold that will be displayed on the screen.
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //app bar search field that will be displayed on the top of the screen.
       appBar: AppBar(
-        title: const Text('Covid19 Tracker'),
+        title: const Text('Enter a country name'),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () async {
-              // Call the method to get country data
               List<Country> countries = await getCountryData();
               showSearch(
                 context: context,
@@ -66,23 +110,49 @@ class _CountryTabState extends State<CountryTab> {
           ),
         ],
       ),
-      body: Center(
-        
-        child: ElevatedButton(
-          onPressed: () async {
-            // Example usage of getCountryData
-            List<Country> countries = await getCountryData();
-            // Do something with the country data, e.g., display in a list
-            print(countries);
-          },
-          child: const Text('Load Country Data'),
-        ),
-        
+
+// here is the list view that will display the country data.
+
+      body: FutureBuilder(
+        future: getCountryData(),
+        builder: (context, snapshot) {
+
+// Here is the code that will be executed when the future is done. if the connection state is done, it will display the list view.
+
+          if (snapshot.connectionState == ConnectionState.done) {
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                Country country = snapshot.data![index];
+                return ListTile(
+                  title: Text(country.countryName),
+                  subtitle: Text('Cases: ${country.cases}'),
+//here is the code that will be executed when the list tile is tapped.
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CountryDetails(country),
+                      ),
+                    );
+                  },
+                );
+              },
+            );
+          } else {
+            
+ // if the connection state is not done, it will display a circular progress indicator.
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
-      
     );
   }
 }
+// Here is the search delegate class that will be used to search for countries. we used 
+// the search delegate class because we want to search for countries and not just for the country name.
 
 class CountrySearch extends SearchDelegate<String> {
   final List<Country> countries;
@@ -92,6 +162,7 @@ class CountrySearch extends SearchDelegate<String> {
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
+      // Here is the code that will be executed when the search is cleared.
       IconButton(
         onPressed: () {
           query = '';
@@ -104,6 +175,7 @@ class CountrySearch extends SearchDelegate<String> {
   @override
   Widget? buildLeading(BuildContext context) {
     return IconButton(
+      // Here is the code that will be executed when the back button is pressed.
       onPressed: () {
         Navigator.pop(context);
       },
@@ -113,12 +185,12 @@ class CountrySearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    // Implement search results based on the query
+    // Here is the code that will be executed when the search is done.
     List<Country> searchResults = countries
         .where((country) =>
             country.countryName.toLowerCase().contains(query.toLowerCase()))
-        .toList();
-
+        .toList();     
+// Here is the code that will be executed when the search is done.
     return ListView.builder(
       itemCount: searchResults.length,
       itemBuilder: (context, index) {
@@ -126,8 +198,8 @@ class CountrySearch extends SearchDelegate<String> {
         return ListTile(
           title: Text(country.countryName),
           subtitle: Text('Cases: ${country.cases}'),
+          //here is the code that will be executed when the list tile is tapped.
           onTap: () {
-            // Handle tap on the search result
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -142,12 +214,12 @@ class CountrySearch extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // Implement suggestions based on the query
+    // Here is the code that will be executed when the search is done.
     List<Country> suggestionList = countries
         .where((country) =>
             country.countryName.toLowerCase().contains(query.toLowerCase()))
         .toList();
-
+// Here is the code that will be executed when the search is done.
     return ListView.builder(
       itemCount: suggestionList.length,
       itemBuilder: (context, index) {
@@ -156,8 +228,6 @@ class CountrySearch extends SearchDelegate<String> {
           title: Text(country.countryName),
           subtitle: Text('Cases: ${country.cases}'),
           onTap: () {
-            // Handle tap on the suggestion
-            // For example, update the UI with the selected suggestion
             query = country.countryName;
             showResults(context);
           },
@@ -166,65 +236,43 @@ class CountrySearch extends SearchDelegate<String> {
     );
   }
 }
+// Here is the country details class that will be displayed when the list tile is tapped.
 
-
-
-
-
-
-
-
-
-
-
-
-
-class CountryDetails extends StatelessWidget {
+class CountryDetails extends StatefulWidget {
+  
   final Country country;
-
   CountryDetails(this.country);
 
   @override
+  State<CountryDetails> createState() => _CountryDetailsState();
+}
+// Here is the code that will be executed when the country details class is created.
+class _CountryDetailsState extends State<CountryDetails> {
+  @override
+  // Here is the code that will be executed when the build method is called.
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: Text(country.countryName),
-    //   ),
-    //   body: Padding(
-
-    //     padding: const EdgeInsets.all(16.0),
-    //     child: Column(
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: [
-    //         buildDetailBox('Cases', country.cases),
-    //         buildDetailBox('Total Recovered', country.totalRecovered),
-    //         buildDetailBox('Deaths', country.deaths),
-    //         buildDetailBox('Active Cases', country.activeCases),
-    //         buildDetailBox('Serious Critical', country.seriousCritical),
-    //       ],
-    //     ),
-    //   ),
-    // );
-
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              country.countryName,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-          ),
           const SizedBox(
-            height: 70,
+            height: 250,
           ),
+
+          // Here is the code that will be executed when the build method is called.
+          Text(
+            widget.country.countryName,
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+
+
+          // Here is the code that will be executed when the build method is called.
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Expanded(
-                child: buildDetailBox('Cases', country.cases, Colors.blue),
+                child:
+                    buildDetailBox('Cases', widget.country.cases, Colors.blue),
               ),
             ],
           ),
@@ -233,11 +281,11 @@ class CountryDetails extends StatelessWidget {
             children: [
               Expanded(
                 child: buildDetailBox(
-                    'Active Cases', country.activeCases, Colors.green),
+                    'Active', widget.country.activeCases, Colors.green),
               ),
               Expanded(
                 child: buildDetailBox(
-                    'Total Recovered', country.totalRecovered, Colors.orange),
+                    'Recovered', widget.country.totalRecovered, Colors.orange),
               ),
             ],
           ),
@@ -245,24 +293,32 @@ class CountryDetails extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: buildDetailBox('Deaths', country.deaths, Colors.red),
+                child:
+                    buildDetailBox('Deaths', widget.country.deaths, Colors.red),
               ),
               Expanded(
                 child: buildDetailBox(
-                    'Serious Critical', country.seriousCritical, Colors.purple),
+                    'Critical', widget.country.seriousCritical, Colors.purple),
               ),
             ],
+          ),
+          const SizedBox(
+            height: 20,
           ),
         ],
       ),
     );
   }
 
+
   Widget buildDetailBox(String title, String value, Color color) {
+  //container that will be displayed on the screen.
     return Container(
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(10),
-       decoration: BoxDecoration(
+      height: 100,
+      width: 100,
+      decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(10),
       ),

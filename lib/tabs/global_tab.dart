@@ -40,6 +40,7 @@ class _GlobalTabState extends State<GlobalTab> {
                 body: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    
                     const Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Text(
@@ -51,6 +52,7 @@ class _GlobalTabState extends State<GlobalTab> {
                     const SizedBox(
                       height: 70,
                     ),
+                    
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
