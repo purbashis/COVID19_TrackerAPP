@@ -11,15 +11,11 @@ http/http.dart as http: For making HTTP requests.
 
 */
 
-
-
 /*
 CountryTab Class
 
 A StatefulWidget representing the main tab where country data will be displayed.
 */
-
-
 
 class CountryTab extends StatefulWidget {
   const CountryTab({Key? key}) : super(key: key);
@@ -29,8 +25,6 @@ class CountryTab extends StatefulWidget {
 }
 
 class _CountryTabState extends State<CountryTab> {
-
-
 /*
 
 getCountryData Function:
@@ -43,9 +37,6 @@ API -  var url = Uri.https(
     );
 
 */
-
-
-
 
   Future<List<Country>> getCountryData() async {
     var url = Uri.https(
@@ -65,7 +56,6 @@ API -  var url = Uri.https(
       var jsonData = jsonDecode(response.body);
 
       //getting the countries data from the json response as a list of Country objects.
-
 
       List<Country> countries = [];
 
@@ -87,9 +77,7 @@ API -  var url = Uri.https(
     }
   }
 
-
 // Here is the scaffold that will be displayed on the screen.
-
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +104,6 @@ API -  var url = Uri.https(
       body: FutureBuilder(
         future: getCountryData(),
         builder: (context, snapshot) {
-
 // Here is the code that will be executed when the future is done. if the connection state is done, it will display the list view.
 
           if (snapshot.connectionState == ConnectionState.done) {
@@ -140,8 +127,7 @@ API -  var url = Uri.https(
               },
             );
           } else {
-            
- // if the connection state is not done, it will display a circular progress indicator.
+            // if the connection state is not done, it will display a circular progress indicator.
             return const Center(
               child: CircularProgressIndicator(),
             );
@@ -151,7 +137,7 @@ API -  var url = Uri.https(
     );
   }
 }
-// Here is the search delegate class that will be used to search for countries. we used 
+// Here is the search delegate class that will be used to search for countries. we used
 // the search delegate class because we want to search for countries and not just for the country name.
 
 class CountrySearch extends SearchDelegate<String> {
@@ -189,7 +175,7 @@ class CountrySearch extends SearchDelegate<String> {
     List<Country> searchResults = countries
         .where((country) =>
             country.countryName.toLowerCase().contains(query.toLowerCase()))
-        .toList();     
+        .toList();
 // Here is the code that will be executed when the search is done.
     return ListView.builder(
       itemCount: searchResults.length,
@@ -239,19 +225,24 @@ class CountrySearch extends SearchDelegate<String> {
 // Here is the country details class that will be displayed when the list tile is tapped.
 
 class CountryDetails extends StatefulWidget {
-  
   final Country country;
   CountryDetails(this.country);
 
   @override
   State<CountryDetails> createState() => _CountryDetailsState();
 }
+
 // Here is the code that will be executed when the country details class is created.
 class _CountryDetailsState extends State<CountryDetails> {
   @override
   // Here is the code that will be executed when the build method is called.
   Widget build(BuildContext context) {
     return Scaffold(
+  appBar: AppBar(
+  backgroundColor: Colors.deepPurple[10],
+    title: Text(" Live COVID-19 ${widget.country.countryName} Details",
+    style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),),
+  ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -264,7 +255,6 @@ class _CountryDetailsState extends State<CountryDetails> {
             widget.country.countryName,
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-
 
           // Here is the code that will be executed when the build method is called.
           Row(
@@ -305,14 +295,33 @@ class _CountryDetailsState extends State<CountryDetails> {
           const SizedBox(
             height: 20,
           ),
+           GestureDetector(
+            onTap: () {
+              // Handle button tap
+            Navigator.pop(context);
+            },
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.deepPurpleAccent[200],
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Text(
+                'back to search',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+           ),
         ],
       ),
     );
   }
 
-
   Widget buildDetailBox(String title, String value, Color color) {
-  //container that will be displayed on the screen.
+    //container that will be displayed on the screen.
     return Container(
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(10),
