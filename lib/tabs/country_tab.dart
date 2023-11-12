@@ -32,7 +32,7 @@ class _CountryTabState extends State<CountryTab> {
 
       if (response.statusCode == 200) {
         var jsonData = jsonDecode(response.body);
-        print(jsonData);
+        // print(jsonData);
         //getting the countries data from the json response as a list of CountryCovidData objects.
 
         for (var countryData in jsonData['countries_stat']) {
