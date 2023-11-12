@@ -247,7 +247,7 @@ class _CountryDetailsState extends State<CountryDetails> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(
-            height: 250,
+            height: 200,
           ),
 
           // Here is the code that will be executed when the build method is called.
