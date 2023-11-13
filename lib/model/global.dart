@@ -14,7 +14,7 @@ class Global {
     required this.active,
     required this.critical,
   });
-
+//here we use the fromMap method to convert the map to a CountryCovidData object.
   factory Global.fromMap(Map<String, dynamic> map) {
     return Global(
       cases: map['cases'].toString(),

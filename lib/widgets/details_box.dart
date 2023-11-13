@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-
+//
 class DetailsBox extends StatelessWidget {
   final String title;
   final String value;
@@ -13,8 +13,11 @@ class DetailsBox extends StatelessWidget {
   }) : super(key: key);
 
   @override
+
+  // This method will be called when the widget is created.
   Widget build(BuildContext context) {
     //container that will be displayed on the screen.
+    //this widget will contain the title and the value of the country.
     return Container(
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(10),

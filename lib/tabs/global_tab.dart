@@ -9,8 +9,10 @@ class GlobalTab extends StatefulWidget {
   @override
   State<GlobalTab> createState() => _GlobalTabState();
 }
-
+//
 class _GlobalTabState extends State<GlobalTab> {
+
+  //getting the global data from the API.
   Future<Global> getGlobalCovidReport() async {
     var response = await http.get(Uri.https('disease.sh', 'v3/covid-19/all'));
     return Global.fromJson(response.body);
@@ -31,6 +33,7 @@ class _GlobalTabState extends State<GlobalTab> {
                 );
               } else {
                 return Scaffold(
+                  //here we are displaying the global data on the screen.
                   body: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [

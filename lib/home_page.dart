@@ -9,7 +9,7 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
-
+// Here is the code that will be executed when the home page class is created.
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
